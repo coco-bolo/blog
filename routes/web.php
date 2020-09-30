@@ -15,22 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function () {
-    return 'test';
-});
+Route::get('/user/add', 'UserController@add');
+Route::get('/user/index', 'UserController@index');
+Route::get('/user/edit/{id}', 'UserController@edit');
 
-Route::get('/test2', function () {
-    return 'test2';
-});
-
-Route::get('/test3', function () {
-    return 'test3';
-});
-
-Route::get('/test4', function () {
-    return 'test4';
-});
-
-Route::get('/test5', function () {
-    return 'test5';
-});
+Route::post('/user/store', 'UserController@store');
+Route::post('/user/update', 'UserController@update');
+Route::get('/user/destroy', 'UserController@destroy');
