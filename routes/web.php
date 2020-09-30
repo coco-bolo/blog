@@ -30,3 +30,7 @@ Route::get('/test3', function () {
 Route::get('/test4', function () {
     return 'test4';
 });
+
+Route::get('/test5', function () {
+    return 'test5';
+});
