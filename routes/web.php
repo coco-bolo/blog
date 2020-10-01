@@ -15,10 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user/add', 'UserController@add');
-Route::get('/user/index', 'UserController@index');
-Route::get('/user/edit/{id}', 'UserController@edit');
-
-Route::post('/user/store', 'UserController@store');
-Route::post('/user/update', 'UserController@update');
-Route::get('/user/del/{id}', 'UserController@del');
+Route::get('/admin/login', 'Admin\LoginController@login');
