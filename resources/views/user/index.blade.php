@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>用户展示页面</title>
+    <link rel="stylesheet" href="{{asset('layui/css/layui.css')}}">
+
 </head>
 
 <body>
@@ -16,12 +18,35 @@
         </tr>
         @foreach ($users as $user)
         <tr>
-            <td>{{$user->id}}</td>
-            <td>{{$user->username}}</td>
-            <td><a href="/user/edit/{{$user->id}}">修改</a> | <a href="#">删除</a></td>
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->username }}</td>
+            <td><a href="/user/edit/{{$user->id}}">修改</a> | <a href="javascript:;" onclick="del(this, {{ $user->id }})">删除</a></td>
         </tr>
         @endforeach
     </table>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="{{asset('layui/layui.all.js')}}"></script>
+    <script>
+        function del(obj, id) {
+            layer.confirm('确认删除？', {
+                btn: ['确认', '取消']
+            }, function() {
+                $.get('/user/del/' + id, function(data) {
+                    if (data.status) {
+                        layer.msg(data.msg, {
+                            icon: 6
+                        })
+                        $(obj).parents('tr').remove()
+                    } else {
+                        layer.msg(data.msg, {
+                            icon: 5
+                        })
+                    }
+                })
+            })
+        }
+    </script>
 </body>
 
 </html>
