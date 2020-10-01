@@ -28,23 +28,22 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="{{asset('layui/layui.all.js')}}"></script>
     <script>
-        function del(obj, id) {
-            layer.confirm('确认删除？', {
-                btn: ['确认', '取消']
-            }, function() {
-                $.get('/user/del/' + id, function(data) {
-                    if (data.status) {
-                        layer.msg(data.msg, {
-                            icon: 6
-                        })
-                        $(obj).parents('tr').remove()
-                    } else {
-                        layer.msg(data.msg, {
-                            icon: 5
-                        })
-                    }
+        window.onload = () => {
+            const layer = layui.layer
+            del = (obj, id) => {
+                layer.confirm('确认删除？', {
+                    btn: ['确认', '取消']
+                }, () => {
+                    $.get('/user/del/' + id, (data) => {
+                        if (data.status) {
+                            layer.msg(data.msg)
+                            $(obj).parents('tr').remove()
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    })
                 })
-            })
+            }
         }
     </script>
 </body>
