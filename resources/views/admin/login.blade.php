@@ -58,7 +58,7 @@
                 </div>
             </div>
             <hr class="hr20">
-            <input value="登录" type="submit">
+            <input id="login-btn" value="登录" type="submit">
             <hr class="hr20">
         </form>
     </div>
@@ -132,8 +132,10 @@
                     }
                 },
                 submitHandler: (form) => {
+                    $('#login-btn').val('登录中...')
+                    $('#login-btn').css('opacity', 0.6)
                     form.submit()
-                }
+                },
             })
 
             $.validator.addMethod("username", (value, element) => {
