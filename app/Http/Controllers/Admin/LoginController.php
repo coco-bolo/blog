@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Gregwar\Captcha\CaptchaBuilder;
 use Gregwar\Captcha\PhraseBuilder;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -23,7 +24,7 @@ class LoginController extends Controller
         $input = $request->except(['_token']);
 
         $rules = [
-            'username' => 'required|between:4,16|alpha_dash|unique:users',
+            'username' => 'required|between:4,16|alpha_dash',
             'password' => 'required|between:6,18|alpha_dash',
             'captcha' => [
                 'required',
@@ -38,11 +39,23 @@ class LoginController extends Controller
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            return redirect('admin/login')->withErrors($validator)->withInput();
         }
 
-        // Session::forget('name');
-        dd($input);
+        $user = User::where('username', $input['username'])->first();
+
+        if (!$user) {
+            return redirect('admin/login')->withErrors('用戶名不存在')->withInput();
+        }
+
+        if ($input['password'] != Crypt::decrypt($user->password)) {
+            return redirect('admin/login')->withErrors('密码不正确')->withInput();
+        }
+
+        Session::forget('loginCaptcha');
+        Session::put('user', $user);
+
+        return redirect('admin/index');
     }
 
     public function checkUsername(Request $request)
@@ -76,5 +89,15 @@ class LoginController extends Controller
         header("Cache-Control: no-cache, must-revalidate");
         header('Content-type: image/jpeg');
         $builder->output();
+    }
+
+    public function index()
+    {
+        return view('admin.index');
+    }
+
+    public function welcome()
+    {
+        return view('admin.welcome');
     }
 }

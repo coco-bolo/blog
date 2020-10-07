@@ -101,6 +101,15 @@
                     username: {
                         required: true,
                         username: true,
+                        remote: {
+                            url: "{{ url('admin/checkUsername') }}",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                username: () => $("#username").val(),
+                                _token: () => '{{ csrf_token() }}',
+                            }
+                        }
                     },
                     password: {
                         required: true,
@@ -122,6 +131,7 @@
                 messages: {
                     username: {
                         required: '<i class="layui-icon layui-icon-close-fill"></i> 用户名不能为空',
+                        remote: '<i class="layui-icon layui-icon-close-fill"></i> 该用户名已被注册'
                     },
                     password: {
                         required: '<i class="layui-icon layui-icon-close-fill"></i> 密码不能为空',

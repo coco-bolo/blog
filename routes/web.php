@@ -20,3 +20,6 @@ Route::post('/admin/doLogin', 'Admin\LoginController@doLogin');
 Route::post('/admin/checkUsername', 'Admin\LoginController@checkUsername');
 Route::post('/admin/checkCaptcha', 'Admin\LoginController@checkCaptcha');
 Route::get('/admin/captcha', 'Admin\LoginController@captcha');
+
+Route::get('/admin/index', 'Admin\LoginController@index');
+Route::get('/admin/welcome', 'Admin\LoginController@welcome');
