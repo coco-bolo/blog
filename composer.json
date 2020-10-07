@@ -13,7 +13,8 @@
         "laravel-lang/lang": "~5.0",
         "laravel/framework": "^6.18.35",
         "laravel/tinker": "^2.0",
-        "mews/captcha": "^3.2"
+        "mews/captcha": "^3.2",
+        "gregwar/captcha": "1.*"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

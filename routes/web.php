@@ -17,3 +17,6 @@ Route::get('/', function () {
 
 Route::get('/admin/login', 'Admin\LoginController@login');
 Route::post('/admin/doLogin', 'Admin\LoginController@doLogin');
+Route::post('/admin/checkUsername', 'Admin\LoginController@checkUsername');
+Route::post('/admin/checkCaptcha', 'Admin\LoginController@checkCaptcha');
+Route::get('/admin/captcha', 'Admin\LoginController@captcha');

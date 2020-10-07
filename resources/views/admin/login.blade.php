@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>后台登录</title>
+    <title>后台管理登录</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -12,80 +12,150 @@
     <link rel="stylesheet" href="{{asset('X-admin/css/login.css')}}">
     <link rel="stylesheet" href="{{asset('X-admin/css/xadmin.css')}}">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/jquery.validate.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/additional-methods.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/localization/messages_zh.js"></script>
     <script src="{{asset('layui/layui.all.js')}}" charset="utf-8"></script>
     <!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .invalid {
+            padding-top: 15px;
+            display: block;
+            color: #e00;
+            font-size: 14px;
+        }
+        .layui-icon {
+            font-size: 18px !important; 
+            position: relative; 
+            left: 0; 
+            top: 2px;
+        }
+    </style>
 </head>
 
 <body class="login-bg">
 
-    <div class="login layui-anim layui-anim-up">
+    <div class="login">
         <div class="message">后台管理登录</div>
         <div id="darkbannerwrap"></div>
-
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
-        <form method="post" action="{{ url('/admin/doLogin') }}" class="layui-form">
+        <form id="login-form" action="{{ url('admin/doLogin') }}" method="post" class="layui-form">
             @csrf
-            <input name="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
-            <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+            <input id="username" class="layui-input" name="username" type="text" placeholder="用户名" autocomplete="off" value="{{ old('username') }}" maxlength="16">
+            <hr class="hr20">
+            <input class="layui-input" name="password" type="password" placeholder="密码" autocomplete="off" maxlength="18">
             <hr class="hr15">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input name="captcha" lay-verify="required" placeholder="验证码" type="text" class="layui-input">
+                    <input id="captcha" class="layui-input" name="captcha" type="text" placeholder="验证码" autocomplete="off" maxlength="4">
                 </div>
                 <div class="layui-input-inline">
                     <label class="layui-form-label">
-                        <img src="{{ captcha_src() }}" onclick="this.src = '{{ captcha_src() }}' + Math.random()">
+                        <img src="{{ url('admin/captcha') }}" onclick="re_captcha(this)">
                     </label>
                 </div>
             </div>
-            <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+            <hr class="hr20">
+            <input value="登录" type="submit">
             <hr class="hr20">
         </form>
     </div>
 
     <script>
-        $(function() {
-            layui.use('form', function() {
-                var form = layui.form;
-                // layer.msg('玩命卖萌中', function(){
-                //   //关闭后的操作
-                //   });
-                //监听提交
-                form.on('submit(login)', function(data) {
-                    // alert(888)
-                    // layer.msg(JSON.stringify(data.field), function() {
-                    //     location.href = 'index.html'
-                    // });
-                    // return false;
-                });
-            });
+        re_captcha = (obj) => {
+            $url = "{{ url('admin/captcha') }}" + '?' + Math.random()
+            obj.src = $url
+        }
+
+        $(() => {
+            @if ($errors->any())
+                var errors = '<ul>'
+
+                @foreach ($errors->all() as $error)
+                    errors += '<li>{{ $error }}</li>'
+                @endforeach
+
+                errors += '</ul>'
+
+            layer.open({
+                title: '提示',
+                offset: '300px',
+                resize: false,
+                skin: 'layui-layer-molv',
+                content: errors
+            })
+            @endif
+            
+            $("#login-form").validate({
+                errorClass: 'invalid',
+                errorPlacement: function(error, element) {
+                    if (element.attr('name') == 'captcha') {
+                        error.insertAfter(element.parent().parent("div"));
+                    } else {
+                        error.insertAfter(element)
+                    }
+                },
+                rules: {
+                    username: {
+                        required: true,
+                        username: true,
+                        remote: {
+                            url: "{{ url('admin/checkUsername') }}",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                username: () => $("#username").val(),
+                                _token: () => '{{ csrf_token() }}',
+                            }
+                        }
+                    },
+                    password: {
+                        required: true,
+                        password: true,
+                    },
+                    captcha: {
+                        required: true,
+                        remote: {
+                            url: "{{ url('admin/checkCaptcha') }}",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                captcha: () => $("#captcha").val(),
+                                _token: () => '{{ csrf_token() }}',
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    username: {
+                        required: '<i class="layui-icon layui-icon-close-fill"></i> 用户名不能为空',
+                        remote: '<i class="layui-icon layui-icon-close-fill"></i> 该用户名已被注册'
+                    },
+                    password: {
+                        required: '<i class="layui-icon layui-icon-close-fill"></i> 密码不能为空',
+                    },
+                    captcha: {
+                        required: '<i class="layui-icon layui-icon-close-fill"></i> 验证码不能为空',
+                        remote: '<i class="layui-icon layui-icon-close-fill"></i> 验证码不正确'
+                    }
+                },
+                submitHandler: (form) => {
+                    form.submit()
+                }
+            })
+
+            $.validator.addMethod("username", (value, element) => {
+                return /^[a-zA-Z_]{1}[\w]{3,15}$/.test(value)
+            }, '<i class="layui-icon layui-icon-close-fill"></i> 用户名不合法（只能为4-16位的字母、数字、下划线的组合，且不能以数字开头）')
+
+            $.validator.addMethod("password", (value, element) => {
+                return /^[\w]{6,18}$/.test(value)
+            }, '<i class="layui-icon layui-icon-close-fill"></i> 密码不合法（只能为6-18位的字母、数字、下划线的组合）')
         })
     </script>
     <!-- 底部结束 -->
-    <script>
-        //百度统计可去掉
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
 </body>
 
 </html>
