@@ -8,18 +8,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="stylesheet" href="{{asset('X-admin/css/font.css')}}">
+    @include('admin.public.styles')
     <link rel="stylesheet" href="{{asset('X-admin/css/login.css')}}">
-    <link rel="stylesheet" href="{{asset('X-admin/css/xadmin.css')}}">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/jquery.validate.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/additional-methods.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/localization/messages_zh.js"></script>
-    <script src="{{asset('layui/layui.all.js')}}" charset="utf-8"></script>
-    <!--[if lt IE 9]>
-      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    @include('admin.public.script')
     <style>
         .invalid {
             padding-top: 15px;
