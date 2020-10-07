@@ -100,4 +100,10 @@ class LoginController extends Controller
     {
         return view('admin.welcome');
     }
+
+    public function logout() {
+        Session::forget('user');
+        
+        return redirect('admin/login');
+    }
 }

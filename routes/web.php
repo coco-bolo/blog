@@ -15,11 +15,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/login', 'Admin\LoginController@login');
-Route::post('/admin/doLogin', 'Admin\LoginController@doLogin');
-Route::post('/admin/checkUsername', 'Admin\LoginController@checkUsername');
-Route::post('/admin/checkCaptcha', 'Admin\LoginController@checkCaptcha');
-Route::get('/admin/captcha', 'Admin\LoginController@captcha');
+Route::prefix('admin')->namespace('Admin')->group(function(){
+    Route::get('login', 'LoginController@login');
+    Route::post('doLogin', 'LoginController@doLogin');
+    Route::post('checkUsername', 'LoginController@checkUsername');
+    Route::post('checkCaptcha', 'LoginController@checkCaptcha');
+    Route::get('captcha', 'LoginController@captcha');
+});
 
-Route::get('/admin/index', 'Admin\LoginController@index');
-Route::get('/admin/welcome', 'Admin\LoginController@welcome');
+Route::prefix('admin')->namespace('Admin')->middleware('islogin')->group(function(){
+    Route::get('index', 'LoginController@index');
+    Route::get('welcome', 'LoginController@welcome');
+    Route::get('logout', 'LoginController@logout');
+    Route::resource('user', 'UserController');
+});
+

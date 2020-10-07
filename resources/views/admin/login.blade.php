@@ -10,11 +10,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     @include('admin.public.styles')
     <link rel="stylesheet" href="{{asset('X-admin/css/login.css')}}">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
+    @include('admin.public.script')
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/jquery.validate.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/additional-methods.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery-validate/1.19.2/localization/messages_zh.js"></script>
-    @include('admin.public.script')
     <style>
         .invalid {
             padding-top: 15px;
@@ -74,12 +73,15 @@
 
                 errors += '</ul>'
 
-            layer.open({
-                title: '提示',
-                offset: '300px',
-                resize: false,
-                skin: 'layui-layer-molv',
-                content: errors
+            layui.use(['layer', 'form'], () => {
+                const layer = layui.layer
+                layer.open({
+                    title: '提示',
+                    offset: '300px',
+                    resize: false,
+                    skin: 'layui-layer-molv',
+                    content: errors
+                })
             })
             @endif
             
