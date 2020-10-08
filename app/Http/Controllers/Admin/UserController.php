@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -12,9 +14,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // dd($request->all());
+        $users = User::where('username', 'like', '%' . $request->input('username') . '%')
+                     ->where('username', 'like', '%' . $request->input('email')  . '%')
+                     ->paginate($request->input('num') ?: 3);
+        // $users = User::paginate(3);
+        return view('admin.user.list', compact('users', 'request'));
     }
 
     /**
@@ -25,6 +32,7 @@ class UserController extends Controller
     public function create()
     {
         //
+        return view('admin.user.add');
     }
 
     /**
@@ -36,6 +44,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $input = $request->all();
+
+        $res = User::create([
+            'email' => $input['email'],
+            'username' => $input['username'],
+            'password' => Crypt::encrypt($input['pass']),
+        ]);
+
+        if ($res) {
+            $data = ['status' => 1, 'msg' => '添加成功'];
+        } else {
+            $data = ['status' => 0, 'msg' => '添加失败'];
+        }
+        //返回数据无需json_encode，laravel底层已自动处理
+        return $data;
     }
 
     /**
