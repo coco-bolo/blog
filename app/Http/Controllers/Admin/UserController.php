@@ -17,7 +17,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // dd($request->all());
-        $users = User::where('username', 'like', '%' . $request->input('username') . '%')
+        $users = User::orderBy('id')
+                     ->where('username', 'like', '%' . $request->input('username') . '%')
                      ->where('username', 'like', '%' . $request->input('email')  . '%')
                      ->paginate($request->input('num') ?: 3);
         // $users = User::paginate(3);
@@ -119,5 +120,27 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        $res = User::destroy($id);
+
+        if ($res) {
+            $data = ['status' => 1, 'msg' => '已删除'];
+        } else {
+            $data = ['status' => 0, 'msg' => '删除失败'];
+        }
+        //返回数据无需json_encode，laravel底层已自动处理
+        return $data;
+    }
+
+    public function delAll(Request $request)
+    {
+        $res = User::destroy($request->get('ids'));
+
+        if ($res) {
+            $data = ['status' => 1, 'msg' => '已删除'];
+        } else {
+            $data = ['status' => 0, 'msg' => '删除失败'];
+        }
+        // 返回数据无需json_encode，laravel底层已自动处理
+        return $data;
     }
 }

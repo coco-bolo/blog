@@ -27,6 +27,8 @@ Route::prefix('admin')->namespace('Admin')->middleware('islogin')->group(functio
     Route::get('index', 'LoginController@index');
     Route::get('welcome', 'LoginController@welcome');
     Route::get('logout', 'LoginController@logout');
+    
+    Route::delete('user/delAll', 'UserController@delAll');
     Route::resource('user', 'UserController');
 });
 
