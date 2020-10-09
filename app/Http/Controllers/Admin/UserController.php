@@ -81,6 +81,9 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $user = User::find($id);
+
+        return view('admin.user.edit', compact('user'));
     }
 
     /**
@@ -93,6 +96,18 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = User::find($id);
+        $user->email = $request->input('email');
+        $user->username = $request->input('username');
+        $res = $user->save();
+
+        if ($res) {
+            $data = ['status' => 1, 'msg' => '修改成功'];
+        } else {
+            $data = ['status' => 0, 'msg' => '修改失败'];
+        }
+        //返回数据无需json_encode，laravel底层已自动处理
+        return $data;
     }
 
     /**
