@@ -30,5 +30,13 @@ Route::prefix('admin')->namespace('Admin')->middleware('islogin')->group(functio
     
     Route::delete('user/delAll', 'UserController@delAll');
     Route::resource('user', 'UserController');
+    
+    
+    Route::delete('role/delAll', 'RoleController@delAll');
+    Route::get('role/{id}/auth', 'RoleController@auth');
+    Route::resource('role', 'RoleController');
+
+    // Route::get('aaa', 'RoleController@aaa');
+
 });
 

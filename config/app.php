@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Mews\Captcha\CaptchaServiceProvider::class,
-
+        Baum\BaumServiceProvider::class,
     ],
 
     /*
