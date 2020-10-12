@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permission;
 use Illuminate\Http\Request;
+use App\Models\Manager;
 use App\Models\Role;
+use Illuminate\Support\Facades\Crypt;
 
-class RoleController extends Controller
+class ManagerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        //
+        $managers = Manager::all();
 
-        return view('admin.role.list', compact('roles'));
+        return view('admin.manager.list', compact('managers'));
     }
 
     /**
@@ -28,8 +30,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission_collection = Permission::where('name', '全部')->first();
-        return view('admin.role.add', compact('permission_collection'));
+        //
+        $roles = Role::all();
+        return view('admin.manager.add', compact('roles'));
     }
 
     /**
@@ -40,16 +43,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $input = $request->all();
-        // dd($input['ids']);
+        // dd($input);
 
-        $role = Role::create([
-            'rolename' => $input['rolename'],
-            'desc' => $input['desc'],
+        $manager = Manager::create([
+            'name' => $input['name'],
+            'pass' => Crypt::encrypt($input['pass']),
+            'tel' => $input['tel'],
+            'email' => $input['email'],
         ]);
 
         if (isset($input['ids']) && !empty($input['ids'])) {
-            $role->permission()->attach($input['ids']);
+            $manager->role()->attach($input['ids']);
         }
 
         // if ($res) {
@@ -81,14 +87,14 @@ class RoleController extends Controller
     public function edit($id)
     {
         //
-        $permission_collection = Permission::where('name', '全部')->first();
-        $role = Role::find($id);
-        $per_ids = [];
-        foreach ($role->permission as $perm) {
-            $per_ids[] = $perm->id;
+        $manager = Manager::find($id);
+        $roles= Role::all();
+        $role_ids = [];
+        foreach ($manager->role as $role) {
+            $role_ids[] = $role->id;
         }
 
-        return view('admin.role.edit', compact('role', 'per_ids', 'permission_collection'));
+        return view('admin.manager.edit', compact('manager', 'roles', 'role_ids'));
     }
 
     /**
@@ -105,16 +111,17 @@ class RoleController extends Controller
         // dd(isset($input['ids']));
         // dd(isset($input['ids']));
    
-        $role = Role::find($id);
-        Role::where('id', $id)->update([
-            'rolename' => $input['rolename'],
-            'desc' => $input['desc'],
+        $manager = Manager::find($id);
+        Manager::where('id', $id)->update([
+            'name' => $input['name'],
+            'tel' => $input['tel'],
+            'email' => $input['email'],
         ]);
-        // dd($role);
+
         if (isset($input['ids']) && !empty($input['ids'])) {
-            $role->permission()->sync($input['ids']);
+            $manager->role()->sync($input['ids']);
         } else {
-            $role->permission()->detach();
+            $manager->role()->detach();
         }
 
         // if ($res) {
@@ -135,10 +142,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         //
-        $role = Role::find($id);
-        $role->permission()->detach();
+        $manager = Manager::find($id);
+        $manager->role()->detach();
 
-        $res = Role::destroy($id);
+        $res = Manager::destroy($id);
 
         if ($res) {
             $data = ['status' => 1, 'msg' => '已删除'];
@@ -147,44 +154,5 @@ class RoleController extends Controller
         }
         //返回数据无需json_encode，laravel底层已自动处理
         return $data;
-    }
-
-    public function delAll(Request $request)
-    {
-        $res = Role::destroy($request->get('ids'));
-
-        if ($res) {
-            $data = ['status' => 1, 'msg' => '已删除'];
-        } else {
-            $data = ['status' => 0, 'msg' => '删除失败'];
-        }
-        // 返回数据无需json_encode，laravel底层已自动处理
-        return $data;
-    }
-
-    public function aaa()
-    {
-        Permission::rebuild();
-
-        // 批量构建树
-        // $permissions = [
-        //     ['id' => 1, 'name' => '全部', 'children' => [
-        //         ['id' => 2, 'name' => '用户管理', 'children' => [
-        //             ['id' => 3, 'name' => '用户列表'],
-        //             ['id' => 4, 'name' => '用户添加'],
-        //             ['id' => 5, 'name' => '用户修改'],
-        //             ['id' => 6, 'name' => '用户删除']
-        //         ]],
-        //         ['id' => 7, 'name' => '文章管理', 'children' => [
-        //             ['id' => 8, 'name' => '文章列表'],
-        //             ['id' => 9, 'name' => '文章添加'],
-        //             ['id' => 10, 'name' => '文章修改'],
-        //             ['id' => 11, 'name' => '文章删除'],
-        //             ['id' => 12, 'name' => '文章停用'],
-        //         ]],
-        //     ]]
-        // ];
-
-        // Permission::buildTree($permissions);
     }
 }

@@ -98,7 +98,7 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('管理员列表','admin-list.html')">
+                        <a onclick="xadmin.add_tab('管理员列表','{{ url("admin/manager") }}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>管理员列表</cite></a>
                     </li>
@@ -113,7 +113,7 @@
                             <cite>权限分类</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('权限管理','admin-rule.html')">
+                        <a onclick="xadmin.add_tab('权限管理','{{ url("admin/permission") }}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>权限管理</cite></a>
                     </li>

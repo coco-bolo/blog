@@ -32,11 +32,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('islogin')->group(functio
     Route::resource('user', 'UserController');
     
     
-    Route::delete('role/delAll', 'RoleController@delAll');
-    Route::get('role/{id}/auth', 'RoleController@auth');
+    // Route::delete('role/delAll', 'RoleController@delAll');
+    // Route::get('role/{id}/auth', 'RoleController@auth');
     Route::resource('role', 'RoleController');
-
     // Route::get('aaa', 'RoleController@aaa');
 
+    Route::resource('manager', 'ManagerController');
+    
+    Route::get('permission/createNode', 'PermissionController@createNode');
+    Route::post('permission/storeNode', 'PermissionController@storeNode');
+    Route::resource('permission', 'PermissionController');
 });
 

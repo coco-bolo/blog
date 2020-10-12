@@ -19,7 +19,8 @@ class CreatePermissionsTable extends Migration
             $table->integer('left')->nullable();
             $table->integer('right')->nullable();
             $table->integer('depth')->nullable();
-            $table->string('name', 255);
+            $table->string('name');
+            $table->string('url');
             // $table->timestamps();
         });
     }
