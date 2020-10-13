@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Gregwar\Captcha\CaptchaBuilder;
@@ -24,8 +24,8 @@ class LoginController extends Controller
         $input = $request->except(['_token']);
 
         $rules = [
-            'username' => 'required|between:4,16|alpha_dash',
-            'password' => 'required|between:6,18|alpha_dash',
+            'mname' => 'required|between:4,16|alpha_dash',
+            'pass' => 'required|between:6,18|alpha_dash',
             'captcha' => [
                 'required',
                 function ($attribute, $value, $fail) {
@@ -42,26 +42,26 @@ class LoginController extends Controller
             return redirect('admin/login')->withErrors($validator)->withInput();
         }
 
-        $user = User::where('username', $input['username'])->first();
+        $manager = Manager::where('name', $input['mname'])->first();
 
-        if (!$user) {
+        if (!$manager) {
             return redirect('admin/login')->withErrors('用戶名不存在')->withInput();
         }
 
-        if ($input['password'] != Crypt::decrypt($user->password)) {
+        if ($input['pass'] != Crypt::decrypt($manager->pass)) {
             return redirect('admin/login')->withErrors('密码不正确')->withInput();
         }
 
         Session::forget('loginCaptcha');
-        Session::put('user', $user);
+        Session::put('manager', $manager);
 
         return redirect('admin/index');
     }
 
-    public function checkUsername(Request $request)
+    public function checkName(Request $request)
     {
-        $username = $request->input('username');
-        $res = User::where('username', $username)->first();
+        $name = $request->input('mname');
+        $res = Manager::where('name', $name)->first();
         if ($res) {
             return response()->json(false);
         } else {
@@ -101,9 +101,15 @@ class LoginController extends Controller
         return view('admin.welcome');
     }
 
-    public function logout() {
+    public function logout()
+    {
         Session::forget('user');
-        
+
         return redirect('admin/login');
+    }
+
+    public function noAccess()
+    {
+        return view('admin.errors.noAccess');
     }
 }

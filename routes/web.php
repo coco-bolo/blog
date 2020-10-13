@@ -21,9 +21,10 @@ Route::prefix('admin')->namespace('Admin')->group(function(){
     Route::post('checkUsername', 'LoginController@checkUsername');
     Route::post('checkCaptcha', 'LoginController@checkCaptcha');
     Route::get('captcha', 'LoginController@captcha');
+    Route::get('noAccess', 'LoginController@noAccess');
 });
 
-Route::prefix('admin')->namespace('Admin')->middleware('islogin')->group(function(){
+Route::prefix('admin')->namespace('Admin')->middleware(['islogin', 'hasrole'])->group(function(){
     Route::get('index', 'LoginController@index');
     Route::get('welcome', 'LoginController@welcome');
     Route::get('logout', 'LoginController@logout');

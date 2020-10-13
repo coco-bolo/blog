@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
 
         // 自定义
         'islogin' => \App\Http\Middleware\IsLogin::class,
+        'hasrole' => \App\Http\Middleware\HasRole::class,
     ];
 
     /**

@@ -15,7 +15,7 @@ class IsLogin
      */
     public function handle($request, Closure $next)
     {
-        if (session()->get('user')) {
+        if (session()->get('manager')) {
             return $next($request);
         } else {
             return redirect('admin/login')->withErrors('非法操作');

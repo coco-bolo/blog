@@ -37,9 +37,9 @@
         <div id="darkbannerwrap"></div>
         <form id="login-form" action="{{ url('admin/doLogin') }}" method="post" class="layui-form">
             @csrf
-            <input id="username" class="layui-input" name="username" type="text" placeholder="用户名" autocomplete="off" value="{{ old('username') }}" maxlength="16">
+            <input id="mname" class="layui-input" name="mname" type="text" placeholder="用户名" autocomplete="off" value="{{ old('mname') }}" maxlength="16">
             <hr class="hr20">
-            <input class="layui-input" name="password" type="password" placeholder="密码" autocomplete="off" maxlength="18">
+            <input class="layui-input" name="pass" type="password" placeholder="密码" autocomplete="off" maxlength="18">
             <hr class="hr15">
             <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -95,13 +95,13 @@
                     }
                 },
                 rules: {
-                    username: {
+                    mname: {
                         required: true,
-                        username: true,
+                        mname: true,
                     },
-                    password: {
+                    pass: {
                         required: true,
-                        password: true,
+                        pass: true,
                     },
                     captcha: {
                         required: true,
@@ -117,10 +117,10 @@
                     }
                 },
                 messages: {
-                    username: {
+                    mname: {
                         required: '<i class="layui-icon layui-icon-close-fill"></i> 用户名不能为空',
                     },
-                    password: {
+                    pass: {
                         required: '<i class="layui-icon layui-icon-close-fill"></i> 密码不能为空',
                     },
                     captcha: {
@@ -135,11 +135,11 @@
                 },
             })
 
-            $.validator.addMethod("username", (value, element) => {
+            $.validator.addMethod("mname", (value, element) => {
                 return /^[a-zA-Z_]{1}[\w]{3,15}$/.test(value)
             }, '<i class="layui-icon layui-icon-close-fill"></i> 用户名不合法（只能为4-16位的字母、数字、下划线的组合，且不能以数字开头）')
 
-            $.validator.addMethod("password", (value, element) => {
+            $.validator.addMethod("pass", (value, element) => {
                 return /^[\w]{6,18}$/.test(value)
             }, '<i class="layui-icon layui-icon-close-fill"></i> 密码不合法（只能为6-18位的字母、数字、下划线的组合）')
         })
