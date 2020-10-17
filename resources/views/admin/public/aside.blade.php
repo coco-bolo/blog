@@ -93,6 +93,24 @@
             </li>
             <li>
                 <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="文章管理">&#xe723;</i>
+                    <cite>文章管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('文章列表','{{route("article.index")}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>文章列表</cite></a>
+                    </li>
+                    <!-- <li>
+                        <a onclick="xadmin.add_tab('添加文章','{{route("article.create")}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加文章</cite></a>
+                    </li> -->
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="管理员管理">&#xe726;</i>
                     <cite>管理员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>

@@ -12,10 +12,12 @@
         "baum/baum": "2.0.0-alpha1",
         "fideloper/proxy": "^4.0",
         "gregwar/captcha": "1.*",
+        "intervention/image": "^2.5",
         "laravel-lang/lang": "~5.0",
         "laravel/framework": "^6.18.35",
         "laravel/tinker": "^2.0",
-        "mews/captcha": "^3.2"
+        "mews/captcha": "^3.2",
+        "overtrue/laravel-filesystem-qiniu": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

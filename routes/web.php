@@ -43,5 +43,8 @@ Route::prefix('admin')->namespace('Admin')->middleware(['islogin', 'hasrole'])->
     Route::get('permission/createNode', 'PermissionController@createNode');
     Route::post('permission/storeNode', 'PermissionController@storeNode');
     Route::resource('permission', 'PermissionController');
-});
 
+    Route::resource('article', 'ArticleController');
+    Route::post('article/thumbUpload', 'ArticleController@thumbUpload')->name('article.thumbUpload');
+    Route::post('article/imgUpload', 'ArticleController@imgUpload')->name('article.imgUpload');
+});
