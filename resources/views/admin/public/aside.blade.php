@@ -72,9 +72,19 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('多级分类','cate.html')">
+                        <a onclick="xadmin.add_tab('分类列表','{{route("category.index")}}')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>多级分类</cite></a>
+                            <cite>分类列表</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('分类添加','{{route("category.createTop")}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>顶级分类添加</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('分类添加','{{route("category.create")}}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>子分类添加</cite></a>
                     </li>
                 </ul>
             </li>

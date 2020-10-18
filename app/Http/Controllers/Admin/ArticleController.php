@@ -15,11 +15,17 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::paginate(10);
+        $articles = Article::with('category')
+            ->where('title', 'like', '%' . $request->input('title') . '%')
+            ->where('editor', 'like', '%' . $request->input('editor')  . '%')
+            ->where('tag', 'like', '%' . $request->input('tag')  . '%')
+            ->orderBy('id')
+            ->paginate($request->input('num') ?: 3);
+        // dd($articles);
 
-        return view('admin.article.list', compact('articles'));
+        return view('admin.article.list', compact('articles', 'request'));
     }
 
     /**
@@ -188,7 +194,7 @@ class ArticleController extends Controller
     {
         $files = $request->file();
         $data = [];
-        
+
         foreach ($files as $file) {
             if (!$file->isValid()) {
                 return ['errno' => 1, 'msg' => '无效的上传文件'];

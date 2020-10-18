@@ -26,90 +26,66 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-body ">
-                        <form class="layui-form layui-col-space5">
-                            <!-- <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
-                                </div>
-                                <div class="layui-inline layui-show-xs-block">
-                                    <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-                                </div> -->
-                            <div class="layui-inline layui-show-xs-block">
-                                <input type="text" name="title" placeholder="请输入文章标题" autocomplete="off" class="layui-input" value="{{ $request->input('title') }}">
-                            </div>
-                            <div class="layui-inline layui-show-xs-block">
-                                <input type="text" name="editor" placeholder="请输入编辑" autocomplete="off" class="layui-input" value="{{ $request->input('editor') }}">
-                            </div>
-                            <div class="layui-inline layui-show-xs-block">
-                                <input type="text" name="tag" placeholder="请输入标签" autocomplete="off" class="layui-input" value="{{ $request->input('tag') }}">
-                            </div>
-                            <div class="layui-inline layui-show-xs-block" style="width: 100px;">
-                                <select name="num">
-                                    <option value="3" @if ($request->input('num') == 3) selected @endif>每页 3 条</option>
-                                    <option value="5" @if ($request->input('num') == 5) selected @endif>每页 5 条</option>
-                                    <option value="8" @if ($request->input('num') == 8) selected @endif>每页 8 条</option>
-                                </select>
-                            </div>
-                            <div class="layui-inline layui-show-xs-block">
-                                <button class="layui-btn" lay-submit lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-                            </div>
-                        </form>
-                    </div>
                     <div class="layui-card-header">
-                        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                        <button class="layui-btn" onclick="xadmin.open('添加文章','{{route("article.create")}}',800,600)"><i class="layui-icon"></i>添加</button>
+                        <!-- <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button> -->
+                        <button class="layui-btn" onclick="xadmin.open('添加分类','{{ url("admin/category/create") }}',600,400)"><i class="layui-icon"></i>添加分类</button>
+                        <button class="layui-btn" onclick="xadmin.open('添加顶级分类','{{ url("admin/category/createTop") }}',600,400)"><i class="layui-icon"></i>添加顶级分类</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
                         <table class="layui-table layui-form">
                             <thead>
                                 <tr>
-                                    <th>
+                                    <!-- <th>
                                         <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary">
-                                    </th>
-                                    <th>标题</th>
-                                    <th>分类</th>
-                                    <th>编辑</th>
-                                    <th>标签</th>
-                                    <th>缩略图</th>
-                                    <th>描述</th>
+                                    </th> -->
+                                    <th>分类名称</th>
                                     <th>状态</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($articles as $article)
-                                <tr>
-                                    <td>
-                                        <input type="checkbox" name="id" value="{{ $article->id }}" lay-skin="primary">
-                                    </td>
-                                    <td>{{$article->title}}</td>
-                                    <td>{{$article->category->name}}</td>
-                                    <td>{{$article->editor}}</td>
-                                    <td>{{$article->tag}}</td>
-                                    <td><img src="http://{{env('QINIU_DOMAIN')}}/{{$article->thumb}}"></td>
-                                    <td>{{$article->desc}}</td>
-                                    <td class="td-status">
-                                        <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
-                                    <td class="td-manage">
-                                        <a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
-                                            <i class="layui-icon">&#xe601;</i>
-                                        </a>
-                                        <a title="编辑" onclick="xadmin.open('编辑','{{route("article.edit", ["article" => $article])}}',800,600)" href="javascript:;">
-                                            <i class="layui-icon">&#xe642;</i>
-                                        </a>
-                                        <a title="删除" onclick="member_del(this, {{$article->id}})" href="javascript:;">
-                                            <i class="layui-icon">&#xe640;</i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                @foreach ($categories as $category)
+                                    @if ($category->depth == 0)
+                                        <tr>
+                                            <!-- <td>
+                                                <input type="checkbox" name="id" value="{{ $category->id }}" lay-skin="primary">
+                                            </td> -->
+                                            <td><strong>{{$category->name}}</strong></td>
+                                            <td class="td-status"></td>
+                                            <td class="td-manage">
+                                                <a title="编辑" onclick="xadmin.open('编辑','{{ url("admin/category/" . $category->id . "/editNode") }}',600,400)" href="javascript:;">
+                                                    <i class="layui-icon">&#xe642;</i>
+                                                </a>
+                                                <a title="删除" onclick="member_del(this,{{ $category->id }})" href="javascript:;">
+                                                    <i class="layui-icon">&#xe640;</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <!-- <td>
+                                                <input type="checkbox" name="id" value="{{ $category->id }}" lay-skin="primary">
+                                            </td> -->
+                                            <td><i class="layui-icon layui-icon-right"></i> {{$category->name}}</td>
+                                            <td class="td-status">
+                                                <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
+                                            </td>
+                                            <td class="td-manage">
+                                                <a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
+                                                    <i class="layui-icon">&#xe601;</i>
+                                                </a>
+                                                <a title="编辑" onclick="xadmin.open('编辑','{{url("admin/category/" . $category->id . "/edit")}}',600,400)" href="javascript:;">
+                                                    <i class="layui-icon">&#xe642;</i>
+                                                </a>
+                                                <a title="删除" onclick="member_del(this,{{$category->id}})" href="javascript:;">
+                                                    <i class="layui-icon">&#xe640;</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    <div class="layui-card-body ">
-                        <div class="page">
-                            {{ $articles->appends($request->all())->onEachSide(1)->render() }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -181,11 +157,11 @@
         layer.confirm('确认要删除吗？', function(index) {
             //发异步删除数据
             $.ajax({
-                url: '/admin/article/' + id,
+                url: '/admin/category/' + id,
                 method: 'delete',
                 dataType: 'json',
                 data: {
-                    _token: '{{csrf_token()}}'
+                    _token: '{{ csrf_token() }}'
                 },
                 success: (data) => {
                     //   console.log(data);
@@ -198,7 +174,7 @@
                     } else {
                         layer.msg(data.msg, {
                             icon: 2,
-                            time: 1000
+                            time: 3000
                         });
                     }
                 }
@@ -223,7 +199,7 @@
             //捉到所有被选中的，发异步进行删除
             // console.log(ids);
             $.ajax({
-                url: '/admin/article/delAll',
+                url: '/admin/category/delAll',
                 method: 'delete',
                 dataType: 'json',
                 data: {
@@ -238,7 +214,7 @@
                             icon: 1,
                             time: 1000
                         });
-
+                        
                     } else {
                         layer.msg(data.msg, {
                             icon: 2,

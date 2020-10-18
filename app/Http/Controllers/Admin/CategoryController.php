@@ -3,26 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
+use App\Models\Category;
 
-class UserController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        // dd($request->all());
-        $users = User::orderBy('id')
-                     ->where('username', 'like', '%' . $request->input('username') . '%')
-                     ->where('email', 'like', '%' . $request->input('email')  . '%')
-                     ->paginate($request->input('num') ?: 3);
-        // $users = User::paginate(3);
-        return view('admin.user.list', compact('users', 'request'));
+        $categories = Category::all();
+
+        // dd($top_categories);
+        return view('admin.category.list', compact('categories'));
     }
 
     /**
@@ -32,8 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.user.add');
+        $top_categories = Category::where('depth', 0)->first()->getSiblingsAndSelf();
+        return view('admin.category.add', compact('top_categories'));
     }
 
     /**
@@ -44,14 +40,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $input = $request->all();
+        // dd($input);
 
-        $res = User::create([
-            'email' => $input['email'],
-            'username' => $input['username'],
-            'password' => Crypt::encrypt($input['pass']),
+        $res = Category::create([
+            'parent_id' => $input['parent_id'] ?? null,
+            'name' => $input['name'],
         ]);
+
+        Category::rebuild();
 
         if ($res) {
             $data = ['status' => 1, 'msg' => '添加成功'];
@@ -81,10 +78,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
-        $user = User::find($id);
+        $top_categories = Category::where('depth', 0)->first()->getSiblingsAndSelf();
+        $category = Category::find($id);
 
-        return view('admin.user.edit', compact('user'));
+        return view('admin.category.edit', compact('top_categories', 'category'));
     }
 
     /**
@@ -96,11 +93,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $user = User::find($id);
-        $user->email = $request->input('email');
-        $user->username = $request->input('username');
-        $res = $user->save();
+        $input = $request->all();
+        // dd($input);
+
+        $res = Category::where('id', $id)->update([
+            'parent_id' => $input['parent_id'] ?? null,
+            'name' => $input['name'],
+        ]);
+
+        Category::rebuild();
 
         if ($res) {
             $data = ['status' => 1, 'msg' => '修改成功'];
@@ -119,11 +120,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $res = User::destroy($id);
+        $res = Category::destroy($id);
+
+        Category::rebuild();
 
         if ($res) {
-            $data = ['status' => 1, 'msg' => '已删除'];
+            $data = ['status' => 1, 'msg' => '删除成功'];
         } else {
             $data = ['status' => 0, 'msg' => '删除失败'];
         }
@@ -131,16 +133,8 @@ class UserController extends Controller
         return $data;
     }
 
-    public function delAll(Request $request)
+    public function createTop()
     {
-        $res = User::destroy($request->get('ids'));
-
-        if ($res) {
-            $data = ['status' => 1, 'msg' => '已删除'];
-        } else {
-            $data = ['status' => 0, 'msg' => '删除失败'];
-        }
-        // 返回数据无需json_encode，laravel底层已自动处理
-        return $data;
+        return view('admin.category.addTop');
     }
 }

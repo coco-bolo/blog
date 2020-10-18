@@ -47,4 +47,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['islogin', 'hasrole'])->
     Route::resource('article', 'ArticleController');
     Route::post('article/thumbUpload', 'ArticleController@thumbUpload')->name('article.thumbUpload');
     Route::post('article/imgUpload', 'ArticleController@imgUpload')->name('article.imgUpload');
+
+    Route::get('category/createTop', 'CategoryController@createTop')->name('category.createTop');
+    Route::resource('category', 'CategoryController');
 });
