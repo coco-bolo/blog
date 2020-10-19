@@ -36,9 +36,9 @@
                                     <i class="fa fa-heart"></i>&nbsp;
                                     <span>0</span>&nbsp;
                                 </div>
-                                <div class="postlist-meta-collect collect collect-no" style="float:right;cursor:default;" title="必须登录才能收藏">
+                                <div class="postlist-meta-collect collect collect-no" uid="16" article_id="{{$article->id}}" style="float:right;cursor:default;" title="必须登录才能收藏">
                                     <i class="fa fa-star"></i>&nbsp;
-                                    <span>0</span>&nbsp;
+                                    <span>{{$article->collect}}</span>&nbsp;
                                 </div>
                             </div>
                             <p> {{$article->desc}}<a rel="nofollow" class="more-link" style="text-decoration:none;" href="#"></a> </p>

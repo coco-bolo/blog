@@ -55,4 +55,5 @@ Route::prefix('admin')->namespace('Admin')->middleware(['islogin', 'hasrole'])->
 
 Route::prefix('home')->namespace('Home')->group(function(){
     Route::get('index', 'IndexController@index');
+    Route::post('collect', 'IndexController@collect');
 });

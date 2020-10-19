@@ -86,7 +86,7 @@
                                     <td>{{$article->category->name}}</td>
                                     <td>{{$article->editor}}</td>
                                     <td>{{$article->tag}}</td>
-                                    <td><img src="http://{{env('QINIU_DOMAIN')}}/{{$article->thumb}}"></td>
+                                    <td><img src="{{'http://'.env('QINIU_DOMAIN').'/'.$article->thumb}}"></td>
                                     <td>{{$article->desc}}</td>
                                     <td class="td-status">
                                         <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
