@@ -137,4 +137,11 @@ class CategoryController extends Controller
     {
         return view('admin.category.addTop');
     }
+
+    public function editTop($id)
+    {
+        $category = Category::find($id);
+
+        return view('admin.category.editTop', compact('category'));
+    }
 }

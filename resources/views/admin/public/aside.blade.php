@@ -76,7 +76,7 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>分类列表</cite></a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a onclick="xadmin.add_tab('分类添加','{{route("category.createTop")}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>顶级分类添加</cite></a>
@@ -85,7 +85,7 @@
                         <a onclick="xadmin.add_tab('分类添加','{{route("category.create")}}')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>子分类添加</cite></a>
-                    </li>
+                    </li> -->
                 </ul>
             </li>
             <li>

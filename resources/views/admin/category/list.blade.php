@@ -53,7 +53,7 @@
                                             <td><strong>{{$category->name}}</strong></td>
                                             <td class="td-status"></td>
                                             <td class="td-manage">
-                                                <a title="编辑" onclick="xadmin.open('编辑','{{ url("admin/category/" . $category->id . "/editNode") }}',600,400)" href="javascript:;">
+                                                <a title="编辑" onclick="xadmin.open('编辑','{{ url("admin/category/" . $category->id . "/editTop") }}',600,400)" href="javascript:;">
                                                     <i class="layui-icon">&#xe642;</i>
                                                 </a>
                                                 <a title="删除" onclick="member_del(this,{{ $category->id }})" href="javascript:;">

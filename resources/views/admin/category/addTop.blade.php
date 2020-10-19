@@ -70,10 +70,10 @@
                                 icon: 6
                             }, () => {
                                 //关闭当前frame
-                                // xadmin.close();
+                                xadmin.close();
                                 // 可以对父窗口进行刷新 
-                                // xadmin.father_reload();
-                                window.location.href = "{{route('category.index')}}";
+                                xadmin.father_reload();
+                                // window.location.href = "{{route('category.index')}}";
                             });
                         } else {
                             layer.alert(data.msg, {

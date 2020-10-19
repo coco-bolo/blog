@@ -49,5 +49,10 @@ Route::prefix('admin')->namespace('Admin')->middleware(['islogin', 'hasrole'])->
     Route::post('article/imgUpload', 'ArticleController@imgUpload')->name('article.imgUpload');
 
     Route::get('category/createTop', 'CategoryController@createTop')->name('category.createTop');
+    Route::get('category/{category}/editTop', 'CategoryController@editTop')->name('category.editTop');
     Route::resource('category', 'CategoryController');
+});
+
+Route::prefix('home')->namespace('Home')->group(function(){
+    Route::get('index', 'IndexController@index');
 });

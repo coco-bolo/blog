@@ -1,0 +1,21 @@
+﻿::-webkit-scrollbar-thumb{background-color:#33BBBA !important;}
+::selection{background:#72d0eb;color:#fff}
+body,.cms-with-sidebar .col-right.catlist-style4 .col-small p:before{color:#3d3d3d}
+body a,.bg-sitenews i.fa-volume-up,.tab-item-comment i,.catlist_1_of_2 .home-heading a,.widget_tinsitestatistic ul li span,.comment-login-pop-click{color:#428bca}
+.tin-tabs-nav li.active a{border-bottom-color:#428bca}
+.home-heading a,#sidebar #submit-mail:hover{background: #428bca}
+body a:hover{color:#60717e}
+article h3,article h3 a,.tab-item-title a{color:#428bca}
+article h3 a:hover,.tab-item-title a:hover,.more-link{color:#dd3333}
+.header-wrap,.primary-navigation ul,.primary-navigation ul ul,.primary-navigation ul ul ul,.user-tabs{background-color:#1d9dc4}
+.logo-title a{color:#ffffff}
+.primary-navigation li > a,.primary-navigation li.current-menu-item a,#focus-us,.user-tabs span a,.user-tabs span i{color:#efefef}
+.user-tabs span:hover,#focus-us:hover, #focus-us:focus,#focus-slide{background:#ffffff}
+.primary-navigation li > a:hover,.primary-navigation li:hover > a, .primary-navigation li.focus > a,.user-tabs span:hover a,.user-tabs span:hover i,#focus-us:hover, #focus-us:focus,.user-tabs span:hover,.user-tabs span:hover i,.login-yet-click a,.login-yet-click a:hover,.focus-content a:hover{color:#00bf9c}
+.primary-navigation ul ul,.primary-navigation a:hover,.primary-navigation li.current-menu-item a{border-bottom-color:#00bf9c}
+#sidebar .widget > h3 span, .floatwidget h3 span, .multi-border-hl span,.tin-tabs-nav li.active a,.cms-with-sidebar .heading-text, .heading-text-blog,.cms-with-sidebar .stickys .heading-text-cms.active,span#comments.active, span#comments_quote.active,#footer-widgets-singlerow .widget > h3 span{border-bottom-color:#f85555}
+.tin-tabs-nav li a:hover{color:#f85555}
+@media screen and (max-width: 480px){
+	h3,h3 a{font-size:12px !important;}
+	article p,.content,.content a,single-content,single-text,single-content a,single-text a,.single-copyright p,.widget,.widget a{font-size:10px !important;}
+}

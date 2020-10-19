@@ -56,7 +56,8 @@ class ArticleController extends Controller
             'thumb' => $input['thumb'],
             'desc' => $input['desc'],
             'content' => htmlspecialchars($input['content']),
-            'cate_id' => 9
+            'category_id' => 9,
+            'isRecommend' => 0,
         ]);
 
         if ($res) {
@@ -113,7 +114,7 @@ class ArticleController extends Controller
             'thumb' => $input['thumb'],
             'desc' => $input['desc'],
             'content' => htmlspecialchars($input['content']),
-            'cate_id' => 9
+            'category_id' => 9
         ]);
 
         if ($res) {
